@@ -88,7 +88,7 @@
 
 -(void)addCow{
     cow = [SKSpriteNode spriteNodeWithImageNamed:@"Cow.png"];//change to train png
-    cow.name = @"cow";
+    cow.name = @"Cow";
     cow.position = CGPointMake(400, 50);
     cow.zPosition = -5;
     cow.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:CGSizeMake(50, 50)];
@@ -99,6 +99,8 @@
 
 -(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
     /* Called when a touch begins */
+    CGPoint location = [[touches anyObject] locationInNode:self];
+    SKNode *node = [self nodeAtPoint:location];
     
 }
 
@@ -108,6 +110,12 @@
         cow.physicsBody.velocity = CGVectorMake(-cowSpeed, 0);
     else
         [cow.physicsBody applyForce:CGVectorMake(-cowAcceleration, 0)];
+    if(cow.position.x <= 200){
+        SKAction* changeFace = [SKAction setTexture:[SKTexture textureWithImageNamed:@"squishCow2.png"]];
+        [cow runAction:changeFace];
+        //cow = [SKSpriteNode spriteNodeWithImageNamed:@"squishCow2.png"];
+        printf("hit");
+    }
     if(cow.position.x <= -40){
         cow.physicsBody.velocity = CGVectorMake(0, 0);
         [cow removeFromParent];
