@@ -13,20 +13,29 @@
     SKSpriteNode *cow;
     SKNode *_bgLayer;
     SKNode *_characterLayer;
+    SKNode *_textLayer;
+    int score;
+    int cowSpeed;
+    int cowAcceleration;
 }
 /****MAIN****/
 -(id)initWithSize:(CGSize)size{
-    
+    score = 0;
+    cowSpeed = 50;
+    cowAcceleration = 5;
     
     if(self = [super initWithSize:size]){
         _bgLayer = [SKNode node];       //init layers
         [self addChild:_bgLayer];
         _characterLayer = [SKNode node];
         [self addChild:_characterLayer];
+        _textLayer = [SKNode node];
+        [self addChild:_textLayer];
         
         [self initScrollingGround];
         [self initScrollingClouds];
         [self addCow];
+        [self scoreCount];
     }
     return self;
 }
@@ -64,6 +73,19 @@
     }
 }
 
+-(void)scoreCount{
+    [_textLayer removeFromParent];
+    _textLayer = [SKNode node];
+    [self addChild:_textLayer];
+    
+    SKLabelNode *scoreLabel = [SKLabelNode labelNodeWithFontNamed:@"Chalkduster"];
+    scoreLabel.text =[NSString stringWithFormat:@"Score: %d", score];
+    scoreLabel.fontColor = [SKColor redColor];
+    scoreLabel.position =CGPointMake(self.size.width/2, self.size.height/2 + 100);
+    [_textLayer addChild:scoreLabel];
+    
+}
+
 -(void)addCow{
     cow = [SKSpriteNode spriteNodeWithImageNamed:@"Cow.png"];//change to train png
     cow.name = @"cow";
@@ -82,10 +104,19 @@
 
 -(void)update:(CFTimeInterval)currentTime {
     /* Called before each frame is rendered */
-    [cow.physicsBody applyForce:CGVectorMake(-5, 0)];
+    if(score<=10)
+        cow.physicsBody.velocity = CGVectorMake(-cowSpeed, 0);
+    else
+        [cow.physicsBody applyForce:CGVectorMake(-cowAcceleration, 0)];
     if(cow.position.x <= -40){
         cow.physicsBody.velocity = CGVectorMake(0, 0);
         [cow removeFromParent];
+        if(score<=10)
+            cowSpeed = cowSpeed+20;
+        else
+            cowAcceleration++;
+        score++;
+        [self scoreCount];
         [self addCow];
     }
 }
