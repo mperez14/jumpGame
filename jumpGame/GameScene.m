@@ -7,6 +7,7 @@
 //
 
 #import "GameScene.h"
+#import <AVFoundation/AVFoundation.h>
 
 @implementation GameScene{
     SKSpriteNode *cow;
@@ -24,6 +25,7 @@
         [self addChild:_characterLayer];
         
         [self initScrollingGround];
+        [self initScrollingClouds];
     }
     return self;
 }
@@ -39,7 +41,7 @@
         [sprite setScale:1];
         sprite.zPosition = 10;
         sprite.anchorPoint = CGPointZero;
-        sprite.position = CGPointMake(i*sprite.size.width, 0);
+        sprite.position = CGPointMake(i*sprite.size.width, 50);
         [sprite runAction:moveGroundSpriteForever];
         [_characterLayer addChild:sprite];
     }
