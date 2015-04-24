@@ -73,7 +73,6 @@
     cow.physicsBody.affectedByGravity = NO;
     cow.physicsBody.allowsRotation = NO;
     [_characterLayer addChild:cow];
-    [cow.physicsBody applyForce:CGVectorMake(-25, 0)];
 }
 
 -(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
@@ -83,6 +82,12 @@
 
 -(void)update:(CFTimeInterval)currentTime {
     /* Called before each frame is rendered */
+    [cow.physicsBody applyForce:CGVectorMake(-5, 0)];
+    if(cow.position.x <= -40){
+        cow.physicsBody.velocity = CGVectorMake(0, 0);
+        [cow removeFromParent];
+        [self addCow];
+    }
 }
 
 @end
