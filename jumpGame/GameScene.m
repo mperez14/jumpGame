@@ -31,7 +31,7 @@
 }
 
 -(void)initScrollingGround{ //Scrolling tracks function
-    SKTexture *groundTexture = [SKTexture textureWithImageNamed:@"grass.png"]; //change runway to train tracks
+    SKTexture *groundTexture = [SKTexture textureWithImageNamed:@"grass2.png"]; //change runway to train tracks
     SKAction *moveGroundSprite = [SKAction moveByX:-groundTexture.size.width*2 y:0 duration:.02*groundTexture.size.width*2];
     SKAction *resetGroundSprite = [SKAction moveByX:groundTexture.size.width*2 y:0 duration:0];
     SKAction *moveGroundSpriteForever = [SKAction repeatActionForever:[SKAction sequence:@[moveGroundSprite, resetGroundSprite]]];
@@ -41,7 +41,7 @@
         [sprite setScale:1];
         sprite.zPosition = 10;
         sprite.anchorPoint = CGPointZero;
-        sprite.position = CGPointMake(i*sprite.size.width, 50);
+        sprite.position = CGPointMake(i*sprite.size.width, -50);
         [sprite runAction:moveGroundSpriteForever];
         [_characterLayer addChild:sprite];
     }
