@@ -17,6 +17,7 @@
     int score;
     int cowSpeed;
     int cowAcceleration;
+    bool squish;
 }
 /****MAIN****/
 -(id)initWithSize:(CGSize)size{
@@ -94,7 +95,17 @@
     cow.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:CGSizeMake(50, 50)];
     cow.physicsBody.affectedByGravity = NO;
     cow.physicsBody.allowsRotation = NO;
+    squish = false;
     [_characterLayer addChild:cow];
+    //cow.yScale = .5;
+}
+
+-(void)squishCow{
+    if(squish == false){
+        cow.yScale = .5;
+        cow.position = CGPointMake(cow.position.x, cow.position.y - 15);
+        squish = true;
+    }
 }
 
 -(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
@@ -110,20 +121,16 @@
         cow.physicsBody.velocity = CGVectorMake(-cowSpeed, 0);
     else
         [cow.physicsBody applyForce:CGVectorMake(-cowAcceleration, 0)];
-    if(cow.position.x <= 200){
-        SKAction* changeFace = [SKAction setTexture:[SKTexture textureWithImageNamed:@"squishCow2.png"]];
-        [cow runAction:changeFace];
-        //cow = [SKSpriteNode spriteNodeWithImageNamed:@"squishCow2.png"];
-        printf("hit");
-    }
-    if(cow.position.x <= -40){
+    if(cow.position.x <= -40){  //cow starting position
         cow.physicsBody.velocity = CGVectorMake(0, 0);
         [cow removeFromParent];
         if(score<=10)
             cowSpeed = cowSpeed+20;
         else
             cowAcceleration++;
-        score++;
+        if(squish == false){    //dont count squished cows
+            score++;
+        }
         [self scoreCount];
         [self addCow];
     }
