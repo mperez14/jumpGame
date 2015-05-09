@@ -11,6 +11,7 @@
 
 @implementation GameScene{
     SKSpriteNode *cow;
+    SKSpriteNode *cowboy;
     SKNode *_bgLayer;
     SKNode *_characterLayer;
     SKNode *_textLayer;
@@ -19,6 +20,13 @@
     int cowAcceleration;
     bool squish;
 }
+/*TODO:
+    -collision detection
+    -affected by gravity
+ */
+ 
+
+
 /****MAIN****/
 -(id)initWithSize:(CGSize)size{
     score = 0;
@@ -36,6 +44,7 @@
         [self initScrollingGround];
         [self initScrollingClouds];
         [self addCow];
+        [self addCowboy];
         [self scoreCount];
     }
     return self;
@@ -56,6 +65,9 @@
         [sprite runAction:moveGroundSpriteForever];
         [_characterLayer addChild:sprite];
     }
+    /*SKSpriteNode *fakeGround = [SKTexture textureWithImageNamed:@"grass_1.png"];
+    fakeGround.position = CGPointMake(0, 0);
+    fakeGround.physicsBody*/
 }
 
 -(void)initScrollingClouds{   //scrolling CLOUDS function
@@ -91,13 +103,24 @@
     cow = [SKSpriteNode spriteNodeWithImageNamed:@"Cow.png"];//change to train png
     cow.name = @"Cow";
     cow.position = CGPointMake(400, 50);
-    cow.zPosition = -5;
-    cow.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:CGSizeMake(50, 50)];
+    cow.zPosition = 10;
+    cow.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:CGSizeMake(60, 50)];
     cow.physicsBody.affectedByGravity = NO;
     cow.physicsBody.allowsRotation = NO;
     squish = false;
     [_characterLayer addChild:cow];
     //cow.yScale = .5;
+}
+-(void)addCowboy{
+    cowboy = [SKSpriteNode spriteNodeWithImageNamed:@"YellowBoy.png"];//change to train png
+    cowboy.name = @"Cowboy";
+    cowboy.position = CGPointMake(200, 100);
+    cowboy.zPosition = 10;
+    cowboy.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:CGSizeMake(60,70)];
+    cowboy.physicsBody.affectedByGravity = NO;
+    cowboy.physicsBody.allowsRotation = NO;
+    [cowboy setScale:.4];
+    [_characterLayer addChild:cowboy];
 }
 
 -(void)squishCow{
@@ -108,16 +131,28 @@
     }
 }
 
+-(void)jump{
+    cowboy.position = CGPointMake(cowboy.position.x, cowboy.position.y+150);
+}
+
 -(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
     /* Called when a touch begins */
     CGPoint location = [[touches anyObject] locationInNode:self];
     SKNode *node = [self nodeAtPoint:location];
     
+    //if([node.name isEqual:@"cow"]){
+    if(cowboy.position.y <=85){
+        [self jump];
+    }
 }
 
 -(void)update:(CFTimeInterval)currentTime {
     /* Called before each frame is rendered */
+    if(cowboy.position.y > 85){
+        cowboy.position = CGPointMake(cowboy.position.x, cowboy.position.y - 5);
+    }
     if(score<=10)
+        
         cow.physicsBody.velocity = CGVectorMake(-cowSpeed, 0);
     else
         [cow.physicsBody applyForce:CGVectorMake(-cowAcceleration, 0)];

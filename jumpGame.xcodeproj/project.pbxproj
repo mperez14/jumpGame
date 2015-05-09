@@ -22,6 +22,7 @@
 		070F0FC41AEA06B300BC37D6 /* Cow.png in Resources */ = {isa = PBXBuildFile; fileRef = 070F0FC31AEA06B300BC37D6 /* Cow.png */; };
 		070F0FC61AEA128600BC37D6 /* squishCow.png in Resources */ = {isa = PBXBuildFile; fileRef = 070F0FC51AEA128600BC37D6 /* squishCow.png */; };
 		070F0FC81AEA13F400BC37D6 /* squishCow2.png in Resources */ = {isa = PBXBuildFile; fileRef = 070F0FC71AEA13F400BC37D6 /* squishCow2.png */; };
+		0765A92D1AFECF4000021BF4 /* YellowBoy.png in Resources */ = {isa = PBXBuildFile; fileRef = 0765A92C1AFECF4000021BF4 /* YellowBoy.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -57,6 +58,7 @@
 		070F0FC31AEA06B300BC37D6 /* Cow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Cow.png; sourceTree = "<group>"; };
 		070F0FC51AEA128600BC37D6 /* squishCow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = squishCow.png; sourceTree = "<group>"; };
 		070F0FC71AEA13F400BC37D6 /* squishCow2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = squishCow2.png; sourceTree = "<group>"; };
+		0765A92C1AFECF4000021BF4 /* YellowBoy.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = YellowBoy.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -115,6 +117,7 @@
 		070F0F8E1AE9F87800BC37D6 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				0765A92C1AFECF4000021BF4 /* YellowBoy.png */,
 				070F0FC71AEA13F400BC37D6 /* squishCow2.png */,
 				070F0FC51AEA128600BC37D6 /* squishCow.png */,
 				070F0FC31AEA06B300BC37D6 /* Cow.png */,
@@ -230,6 +233,7 @@
 				070F0FA11AE9F87900BC37D6 /* Images.xcassets in Resources */,
 				070F0FC41AEA06B300BC37D6 /* Cow.png in Resources */,
 				070F0FC61AEA128600BC37D6 /* squishCow.png in Resources */,
+				0765A92D1AFECF4000021BF4 /* YellowBoy.png in Resources */,
 				070F0FBC1AEA015400BC37D6 /* Clouds.png in Resources */,
 				070F0FBA1AE9FE3A00BC37D6 /* grass.png in Resources */,
 				070F0FC81AEA13F400BC37D6 /* squishCow2.png in Resources */,
@@ -448,6 +452,7 @@
 				070F0FB51AE9F87900BC37D6 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		070F0FB61AE9F87900BC37D6 /* Build configuration list for PBXNativeTarget "jumpGameTests" */ = {
 			isa = XCConfigurationList;
@@ -456,6 +461,7 @@
 				070F0FB81AE9F87900BC37D6 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
