@@ -19,9 +19,12 @@
     int cowSpeed;
     int cowAcceleration;
     bool squish;
+    bool once;
 }
 /*TODO:
     -collision detection
+        -cow from front
+        -cow from bottom
     -affected by gravity
  */
  
@@ -29,6 +32,7 @@
 
 /****MAIN****/
 -(id)initWithSize:(CGSize)size{
+    once = false;
     score = 0;
     cowSpeed = 50;
     cowAcceleration = 5;
@@ -65,9 +69,6 @@
         [sprite runAction:moveGroundSpriteForever];
         [_characterLayer addChild:sprite];
     }
-    /*SKSpriteNode *fakeGround = [SKTexture textureWithImageNamed:@"grass_1.png"];
-    fakeGround.position = CGPointMake(0, 0);
-    fakeGround.physicsBody*/
 }
 
 -(void)initScrollingClouds{   //scrolling CLOUDS function
@@ -93,7 +94,7 @@
     
     SKLabelNode *scoreLabel = [SKLabelNode labelNodeWithFontNamed:@"Chalkduster"];
     scoreLabel.text =[NSString stringWithFormat:@"Score: %d", score];
-    scoreLabel.fontColor = [SKColor redColor];
+    scoreLabel.fontColor = [SKColor yellowColor];
     scoreLabel.position =CGPointMake(self.size.width/2, self.size.height/2 + 100);
     [_textLayer addChild:scoreLabel];
     
@@ -104,7 +105,7 @@
     cow.name = @"Cow";
     cow.position = CGPointMake(400, 50);
     cow.zPosition = 10;
-    cow.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:CGSizeMake(60, 50)];
+    cow.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:cow.size];
     cow.physicsBody.affectedByGravity = NO;
     cow.physicsBody.allowsRotation = NO;
     squish = false;
@@ -116,7 +117,7 @@
     cowboy.name = @"Cowboy";
     cowboy.position = CGPointMake(200, 100);
     cowboy.zPosition = 10;
-    cowboy.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:CGSizeMake(60,70)];
+    cowboy.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:cowboy.size];
     cowboy.physicsBody.affectedByGravity = NO;
     cowboy.physicsBody.allowsRotation = NO;
     [cowboy setScale:.4];
@@ -131,8 +132,21 @@
     }
 }
 
+-(void)gameOver{
+    //[_textLayer removeFromParent];
+    //_textLayer = [SKNode node];
+    //[self addChild:_textLayer];
+    
+    SKLabelNode *gameOver = [SKLabelNode labelNodeWithFontNamed:@"Chalkduster"];
+    gameOver.text =[NSString stringWithFormat:@"Game Over"];
+    gameOver.fontColor = [SKColor redColor];
+    gameOver.position =CGPointMake(self.size.width/2, self.size.height/2);
+    [_textLayer addChild:gameOver];
+}
+
 -(void)jump{
-    cowboy.position = CGPointMake(cowboy.position.x, cowboy.position.y+150);
+    cowboy.position = CGPointMake(cowboy.position.x, cowboy.position.y+250);
+    cowboy.physicsBody.velocity = CGVectorMake(0, 0);
 }
 
 -(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
@@ -148,15 +162,24 @@
 
 -(void)update:(CFTimeInterval)currentTime {
     /* Called before each frame is rendered */
-    if(cowboy.position.y > 85){
+    if(cowboy.position.y > 85){ //make ground, cowboy doesnt fall past certain point
         cowboy.position = CGPointMake(cowboy.position.x, cowboy.position.y - 5);
     }
+    else if(cowboy.position.x<=-10){
+        if(once == false){
+            [_characterLayer removeFromParent];
+            [self gameOver];
+            _characterLayer = [SKNode node];
+            [self addChild:_characterLayer];
+            [self initScrollingGround];
+            once = true;
+        }
+    }
     if(score<=10)
-        
         cow.physicsBody.velocity = CGVectorMake(-cowSpeed, 0);
     else
         [cow.physicsBody applyForce:CGVectorMake(-cowAcceleration, 0)];
-    if(cow.position.x <= -40){  //cow starting position
+    if(cow.position.x <= -40 || cow.position.y <= -10){  //cow starting position
         cow.physicsBody.velocity = CGVectorMake(0, 0);
         [cow removeFromParent];
         if(score<=10)
